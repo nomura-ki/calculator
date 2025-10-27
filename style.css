@@ -1,3 +1,123 @@
-.button {
-  background-color: black;
+#CALC_WIN_MAIN {
+  background-color: #eff2f7;
+  width: 315px;
+  height: 430px;
+  padding: 10px;
+  border: 1px solid #d2d4d6;
+  position: fixed;
+  left: 10%;
+  top: 10%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+#CALC_KEY_MAIN {
+  display: grid;
+  grid-template-columns: repeat(4, 75px);
+  grid-template-rows: repeat(5, 60px);
+  gap: 5px;
+}
+
+#CALC_KEY_MAIN::after {
+  content: "";
+  grid-column: 1;
+  grid-row: 5;
+}
+
+#CALC_WIN_DIS {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#CALC_LBL_DIS {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 10px;
+  width: 315px;
+  height: 110px;
+}
+
+#CALC_LBL_SDIS {
+  display: block;
+  text-align: right;
+  width: 315px;
+  height: 35px;
+  font-size: 25px;
+}
+
+#CALC_LBL_MDIS {
+  display: block;
+  text-align: right;
+  width: 315px;
+  height: 65px;
+  font-size: 45px;
+}
+
+[id^="CALC_BTN_"] {
+  border-radius: 8px;
+  font-size: 18px;
+}
+
+[id^="CALC_BTN_NUM"] {
+  background: #ffffff;
+  border: 0.3px solid #d2d4d6;
+}
+
+#CALC_BTN_POINT {
+  background: #ffffff;
+  border: 0.3px solid #d2d4d6;
+}
+
+[id^="CALC_BTN_OPS"] {
+  background: #f5f5f5;
+  border: 0.3px solid #d2d4d6;
+  font-size: 20px;
+}
+
+#CALC_BTN_EQ {
+  background: #0266bf;
+  color: #ffffff;
+  border: 0.3px solid #d2d4d6;
+}
+
+#CALC_BTN_BKSP,
+#CALC_BTN_CE,
+#CALC_BTN_CLR {
+  background: #f5f5f5;
+  border: 0.3px solid #d2d4d6;
+}
+
+[id^="CALC_BTN_NUM"]:hover,
+#CALC_BTN_POINT:hover,
+[id^="CALC_BTN_OPS"]:hover,
+#CALC_BTN_BKSP:hover,
+#CALC_BTN_CE:hover,
+#CALC_BTN_CLR:hover {
+  filter: brightness(0.9);
+  transform: scale(0.97);
+}
+
+#CALC_BTN_EQ:hover {
+  filter: brightness(1.1);
+  transform: scale(0.97);
+}
+
+[id^="CALC_BTN_NUM"]:active,
+#CALC_BTN_POINT:active,
+[id^="CALC_BTN_OPS"]:active,
+#CALC_BTN_BKSP:active,
+#CALC_BTN_CE:active,
+#CALC_BTN_CLR:active {
+  filter: brightness(0.75);
+  transform: scale(0.93);
+}
+
+#CALC_BTN_EQ:active {
+  filter: brightness(1.25);
+  transform: scale(0.93);
 }
