@@ -34,18 +34,3 @@ export function setOperator(op) {
 export function getOperator() {
   return operator;
 }
-
-export function clearEntry() {
-  if (phase === "EnteringA") {
-    operandA = "";
-  } else if (phase === "EnteringB") {
-    operandB = "";
-  }
-}
-
-export function resetAll() {
-  operandA = "";
-  operandB = "";
-  operator = null;
-  phase = "EnteringA";
-}
