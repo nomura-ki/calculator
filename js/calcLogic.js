@@ -7,15 +7,9 @@ import {
   getOperandB,
   setOperator,
   getOperator,
-  clearEntry,
-  resetAll,
 } from "./state.js";
 
-import {
-  updateMainDisplay,
-  updateSubDisplay,
-  clearDisplay,
-} from "./display.js";
+import { updateMainDisplay, updateSubDisplay } from "./display.js";
 
 //共有ユーティリティ
 const MaxNumber = 12;
@@ -52,14 +46,14 @@ function refreshSubDisplay(withEqual) {
   }
 
   const left = oprdA === "" ? "0" : oprdA;
-  const right = oprdB === "" ? "0" : oprdB;
+  const right = oprdB === "" ? (withEqual ? left : "0") : oprdB;
 
   if (withEqual === true) {
     updateSubDisplay(`${left} ${op} ${right} =`);
   } else if (withEqual === false && oprdB === "") {
     updateSubDisplay(`${left} ${op}`);
   } else {
-    updateSubDisplay(`${left} ${op} ${right}`);
+    updateSubDisplay(`${left} ${op}`);
   }
 }
 
@@ -76,9 +70,9 @@ export function handleNumberClick(n) {
   let getOperand = getActive();
 
   if (getOperand === "" || getOperand === "0") {
-    getOperand = n;
+    getOperand = String(n);
   } else {
-    getOperand += n;
+    getOperand = String(getOperand) + String(n);
   }
 
   if (isOverMaxNumber(getOperand)) {
@@ -115,6 +109,10 @@ export function handlePointClick() {
 }
 
 export function handleOperatorClick(op) {
+  if (getOperandA() === "") {
+    setOperandA("0");
+  }
+
   if (getPhase() === "ResultShown") {
     setPhase("EnteringB");
     setOperator(op);
@@ -124,7 +122,7 @@ export function handleOperatorClick(op) {
     return;
   }
 
-  if (phase === "EnteringB" && getOperandB() === "") {
+  if (getPhase() === "EnteringB" && getOperandB() === "") {
     setOperator(op);
     refreshSubDisplay();
     return;
@@ -138,10 +136,9 @@ export function handleOperatorClick(op) {
 }
 
 export function handleEqualClick() {
-  const oprdA = getOperandA() || "0";
-  const oprdB =
-    getOperandB() || (getPhase() === "EnteringB" ? getOperandA() : "");
   const op = getOperator();
+  const oprdA = getOperandA() || "0";
+  const oprdB = getOperandB() || (getPhase() === "EnteringB" ? oprdA : "");
 
   if (op === null || op === undefined) {
     return;
@@ -149,4 +146,91 @@ export function handleEqualClick() {
 
   const A = parseFloat(oprdA);
   const B = parseFloat(oprdB === "" ? "0" : oprdB);
+
+  if (op === "÷" && B === 0) {
+    updateMainDisplay("0で割ることはできません");
+    updateSubDisplay("");
+    setPhase(ResultShown);
+    return;
+  }
+
+  let calc = 0;
+  switch (op) {
+    case "＋":
+      calc = A + B;
+      break;
+
+    case "ー":
+      calc = A - B;
+      break;
+
+    case "×":
+      calc = A * B;
+      break;
+
+    case "÷":
+      calc = A / B;
+      break;
+
+    default:
+      return;
+  }
+
+  refreshSubDisplay(true);
+  setOperandA(String(calc));
+  setOperandB("");
+  setOperator(null);
+  setPhase("ResultShown");
+  updateMainDisplay(calc);
+}
+
+export function handleBackspaceClick() {
+  if (getPhase() === "ResultShown") {
+    updateSubDisplay("");
+    setPhase("EnteringA");
+    return;
+  }
+
+  if (getPhase() === "EnteringB" || getOperandB() === "") return;
+
+  let calc = getActive() ?? "0";
+
+  if (calc.length < 2) {
+    calc = "0";
+  } else {
+    calc = calc.slice(0, -1);
+  }
+
+  setActive(calc);
+  updateMainDisplay(calc);
+  refreshSubDisplay();
+}
+
+export function handleClearEntryClick() {
+  if (getPhase() === "ResultShown") {
+    setOperandA("0");
+    setOperandB("");
+    setOperator(null);
+    setPhase("EnteringA");
+    updateMainDisplay("0");
+    refreshSubDisplay();
+    return;
+  }
+
+  let calc = getActive() ?? "0";
+
+  calc = "";
+
+  setActive(calc);
+  updateMainDisplay("0");
+  refreshSubDisplay();
+}
+
+export function handleClearAllClick() {
+  setOperandA("0");
+  setOperandB("");
+  setOperator(null);
+  setPhase("EnteringA");
+  updateMainDisplay("0");
+  refreshSubDisplay();
 }

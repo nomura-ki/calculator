@@ -48,6 +48,8 @@
   width: 315px;
   height: 35px;
   font-size: 25px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 #CALC_LBL_MDIS {
@@ -56,6 +58,8 @@
   width: 315px;
   height: 65px;
   font-size: 45px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 [id^="CALC_BTN_"] {

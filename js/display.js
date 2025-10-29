@@ -12,30 +12,22 @@ export function updateMainDisplay(value) {
 
   const mainDis = document.getElementById("CALC_LBL_MDIS");
   mainDis.textContent = mainDisVal;
+
+  AdjustFontSize(mainDis, 45, 16);
 }
 
 export function updateSubDisplay(expression) {
   const subDis = document.getElementById("CALC_LBL_SDIS");
   subDis.textContent = expression;
+
+  AdjustFontSize(subDis, 25, 10);
 }
 
-export function clearDisplay(type) {
-  const mainDis = document.getElementById("CALC_LBL_MDIS");
-  const subDis = document.getElementById("CALC_LBL_SDIS");
+function AdjustFontSize(element, maxPx, minPx) {
+  element.style.fontSize = maxPx + "px";
 
-  switch (type) {
-    case "main":
-      mainDis.textContent = "0";
-      break;
-
-    case "sub":
-      subDis.textContent = "";
-      break;
-
-    case "all":
-    default:
-      mainDis.textContent = "0";
-      subDis.textContent = "";
-      break;
+  while (element.scrollWidth > element.clientWidth && maxPx > minPx) {
+    maxPx--;
+    element.style.fontSize = maxPx + "px";
   }
 }
