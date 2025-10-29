@@ -81,7 +81,9 @@ export function handleNumberClick(n) {
     getOperand += n;
   }
 
-  if (isOverMaxNumber(getOperand)) return;
+  if (isOverMaxNumber(getOperand)) {
+    return;
+  }
 
   setActive(getOperand);
   updateMainDisplay(getOperand);
@@ -89,7 +91,7 @@ export function handleNumberClick(n) {
 }
 
 export function handlePointClick() {
-  if (getPhase === "ResultShown") {
+  if (getPhase() === "ResultShown") {
     setOperandA("0");
     setOperandB("");
     setOperator(null);
@@ -113,7 +115,7 @@ export function handlePointClick() {
 }
 
 export function handleOperatorClick(op) {
-  if (phase === "ResultShown") {
+  if (getPhase() === "ResultShown") {
     setPhase("EnteringB");
     setOperator(op);
     setOperandB("");
@@ -144,36 +146,7 @@ export function handleEqualClick() {
   if (op === null || op === undefined) {
     return;
   }
+
+  const A = parseFloat(oprdA);
+  const B = parseFloat(oprdB === "" ? "0" : oprdB);
 }
-
-/*
-let numA = "";
-let numB = "";
-
-export function handleNumberClick(n) {
-  if (phase === "EnteringA") {
-    if (numA.replace(".", "").length > 12) {
-    } else {
-      numA += String(n);
-    }
-  } else if (phase === "EnteringB") {
-    if (numB.replace(".", "").length > 12) {
-    } else {
-      numB += String(n);
-    }
-  }
-
-  if (numA.replace(".", "").length > MaxNumber) {
-    numA;
-  }
-
-  operandA += numA;
-  operandB += numB;
-}
-*/
-
-export function handlePointClick() {}
-
-export function handleOperatorClick() {}
-
-export function handleEqualClick() {}

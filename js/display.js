@@ -2,7 +2,7 @@ export function updateMainDisplay(value) {
   let mainDisVal;
 
   if (typeof value === "number") {
-    mainDisVal = value.toLocaeString("ja-JP", {
+    mainDisVal = value.toLocaleString("ja-JP", {
       minimumFractionDigits: 0,
       maximumFractionDigits: 10,
     });
@@ -11,7 +11,7 @@ export function updateMainDisplay(value) {
   }
 
   const mainDis = document.getElementById("CALC_LBL_MDIS");
-  mainDis.textContent = mainDisval;
+  mainDis.textContent = mainDisVal;
 }
 
 export function updateSubDisplay(expression) {
@@ -20,7 +20,7 @@ export function updateSubDisplay(expression) {
 }
 
 export function clearDisplay(type) {
-  const mainDis = document.getElememtById("CALC_LBL_MDIS");
+  const mainDis = document.getElementById("CALC_LBL_MDIS");
   const subDis = document.getElementById("CALC_LBL_SDIS");
 
   switch (type) {

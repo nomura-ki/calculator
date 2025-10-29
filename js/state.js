@@ -1,4 +1,4 @@
-let operandA = "";
+let operandA = "0";
 let operandB = "";
 let operator = null;
 let phase = "EnteringA";
