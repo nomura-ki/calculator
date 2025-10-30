@@ -8,6 +8,8 @@ import {
   handleClearAllClick,
 } from "./calcLogic.js";
 
+import { ClickState } from "./state.js";
+
 for (let i = 0; i < 10; i++) {
   document
     .getElementById(`CALC_BTN_NUM_${i}`)
@@ -50,24 +52,35 @@ document
   .getElementById("CALC_BTN_CLR")
   .addEventListener("click", () => handleClearAllClick());
 
-const KeyAction = {};
+function KeyInput() {
+  const KeyAction = {};
 
-for (let i = 0; i < 10; i++) {
-  KeyAction[String(i)] = () => handleNumberClick(i);
+  for (let i = 0; i < 10; i++) {
+    KeyAction[String(i)] = () => handleNumberClick(i);
+  }
+
+  KeyAction["."] = () => handlePointClick();
+  KeyAction["+"] = () => handleOperatorClick("＋");
+  KeyAction["-"] = () => handleOperatorClick("ー");
+  KeyAction["*"] = () => handleOperatorClick("×");
+  KeyAction["/"] = () => handleOperatorClick("÷");
+  KeyAction["Backspace"] = () => handleBackspaceClick();
+  KeyAction["Delete"] = () => handleClearEntryClick();
+  KeyAction["Escape"] = () => handleClearAllClick();
+
+  document.addEventListener("keydown", (event) => {
+    if (ClickState.ClickDisabled) return;
+
+    if (event.key === "Enter") {
+      event.preventDefault();
+      document.getElementById("CALC_BTN_EQ").click();
+      return;
+    }
+
+    if (KeyAction[event.key]) {
+      KeyAction[event.key]();
+    }
+  });
 }
 
-KeyAction["."] = () => handlePointClick();
-KeyAction["+"] = () => handleOperatorClick("＋");
-KeyAction["-"] = () => handleOperatorClick("ー");
-KeyAction["*"] = () => handleOperatorClick("×");
-KeyAction["/"] = () => handleOperatorClick("÷");
-KeyAction["Enter"] = () => handleEqualClick();
-KeyAction["Backspace"] = () => handleBackspaceClick();
-KeyAction["Delete"] = () => handleClearEntryClick();
-KeyAction["Escape"] = () => handleClearAllClick();
-
-document.addEventListener("keydown", (event) => {
-  if (KeyAction[event.key]) {
-    KeyAction[event.key]();
-  }
-});
+KeyInput();

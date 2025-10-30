@@ -9,7 +9,11 @@ import {
   getOperator,
 } from "./state.js";
 
-import { updateMainDisplay, updateSubDisplay } from "./display.js";
+import {
+  updateMainDisplay,
+  updateSubDisplay,
+  disabledButton,
+} from "./display.js";
 
 //共有ユーティリティ
 const MaxNumber = 16;
@@ -113,6 +117,13 @@ export function handleOperatorClick(op) {
     setOperandA("0");
   }
 
+  let getOperand = getActive();
+  if (getOperand.endsWith(".")) {
+    getOperand = getOperand.slice(0, -1);
+    setActive(getOperand);
+    updateMainDisplay(getOperand);
+  }
+
   if (getPhase() === "ResultShown") {
     setPhase("EnteringB");
     setOperator(op);
@@ -140,7 +151,8 @@ export function handleOperatorClick(op) {
       setOperator(null);
       updateMainDisplay("0で割ることはできません");
       updateSubDisplay("");
-      setPhase(ResultShown);
+      setPhase("ResultShown");
+      disabledButton();
       return;
     }
 
@@ -185,6 +197,13 @@ export function handleOperatorClick(op) {
 }
 
 export function handleEqualClick() {
+  let getOperand = getActive();
+  if (getOperand.endsWith(".")) {
+    getOperand = getOperand.slice(0, -1);
+    setActive(getOperand);
+    updateMainDisplay(getOperand);
+  }
+
   const op = getOperator();
   const oprdA = getOperandA() || "0";
   const oprdB = getOperandB() || (getPhase() === "EnteringB" ? oprdA : "");
@@ -202,7 +221,8 @@ export function handleEqualClick() {
     setOperator(null);
     updateMainDisplay("0で割ることはできません");
     updateSubDisplay("");
-    setPhase(ResultShown);
+    setPhase("ResultShown");
+    disabledButton();
     return;
   }
 
@@ -241,13 +261,13 @@ export function handleEqualClick() {
 export function handleBackspaceClick() {
   if (getPhase() === "ResultShown") {
     updateSubDisplay("");
-    setPhase("EnteringA");
+    setPhase("ResultShown");
     return;
   }
 
-  if (getPhase() === "EnteringB" || getOperandB() === "") return;
+  if (getPhase() === "EnteringB" && getOperandB() === "") return;
 
-  let calc = getActive() ?? "0";
+  let calc = String(getActive() ?? "0");
 
   if (calc.length < 2) {
     calc = "0";

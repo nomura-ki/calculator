@@ -1,3 +1,5 @@
+import { ClickState } from "./state.js";
+
 export function updateMainDisplay(value) {
   let mainDisVal;
 
@@ -30,4 +32,43 @@ function AdjustFontSize(element, maxPx, minPx) {
     maxPx--;
     element.style.fontSize = maxPx + "px";
   }
+}
+
+export function disabledButton() {
+  for (let i = 0; i < 10; i++) {
+    document.getElementById(`CALC_BTN_NUM_${i}`).disabled = true;
+  }
+  document.getElementById("CALC_BTN_POINT").disabled = true;
+  document.getElementById("CALC_BTN_OPS_ADD").disabled = true;
+  document.getElementById("CALC_BTN_OPS_SUB").disabled = true;
+  document.getElementById("CALC_BTN_OPS_MUL").disabled = true;
+  document.getElementById("CALC_BTN_OPS_DIV").disabled = true;
+  document.getElementById("CALC_BTN_BKSP").disabled = true;
+  document.getElementById("CALC_BTN_CE").disabled = true;
+  document.getElementById("CALC_BTN_CLR").disabled = true;
+  ClickState.ClickDisabled = true;
+
+  document.getElementById("CALC_BTN_EQ").addEventListener(
+    "click",
+    () => {
+      enableButtons();
+      updateMainDisplay("0");
+    },
+    { once: true }
+  );
+}
+
+function enableButtons() {
+  for (let i = 0; i < 10; i++) {
+    document.getElementById(`CALC_BTN_NUM_${i}`).disabled = false;
+  }
+  document.getElementById("CALC_BTN_POINT").disabled = false;
+  document.getElementById("CALC_BTN_OPS_ADD").disabled = false;
+  document.getElementById("CALC_BTN_OPS_SUB").disabled = false;
+  document.getElementById("CALC_BTN_OPS_MUL").disabled = false;
+  document.getElementById("CALC_BTN_OPS_DIV").disabled = false;
+  document.getElementById("CALC_BTN_BKSP").disabled = false;
+  document.getElementById("CALC_BTN_CE").disabled = false;
+  document.getElementById("CALC_BTN_CLR").disabled = false;
+  ClickState.ClickDisabled = false;
 }

@@ -34,3 +34,7 @@ export function setOperator(op) {
 export function getOperator() {
   return operator;
 }
+
+export const ClickState = {
+  ClickDisabled: false,
+};
