@@ -12,10 +12,10 @@ import {
 import { updateMainDisplay, updateSubDisplay } from "./display.js";
 
 //共有ユーティリティ
-const MaxNumber = 12;
+const MaxNumber = 16;
 
 function isOverMaxNumber(mn) {
-  const Number = String(mn).replace("-", "").replace(".", "");
+  const Number = String(mn).replace(".", "");
   return Number.length > MaxNumber;
 }
 
@@ -126,6 +126,55 @@ export function handleOperatorClick(op) {
     setOperator(op);
     refreshSubDisplay();
     return;
+  } else if (getPhase() === "EnteringB") {
+    const oldOp = getOperator();
+    const oprdA = getOperandA() || "0";
+    const oprdB = getOperandB() || "0";
+
+    const A = parseFloat(oprdA);
+    const B = parseFloat(oprdB);
+
+    if (oldOp === "÷" && B === 0) {
+      setOperandA("0");
+      setOperandB("");
+      setOperator(null);
+      updateMainDisplay("0で割ることはできません");
+      updateSubDisplay("");
+      setPhase(ResultShown);
+      return;
+    }
+
+    let calc = 0;
+    switch (oldOp) {
+      case "＋":
+        calc = A + B;
+        break;
+
+      case "ー":
+        calc = A - B;
+        break;
+
+      case "×":
+        calc = A * B;
+        break;
+
+      case "÷":
+        calc = A / B;
+        break;
+
+      default:
+        return;
+    }
+
+    const dispCalc = isOverMaxNumber(calc) ? calc.toExponential() : calc;
+
+    setOperandA(dispCalc);
+    setOperandB("");
+    setOperator(op);
+    setPhase("EnteringB");
+    refreshSubDisplay();
+    updateMainDisplay(dispCalc);
+    return;
   }
 
   setOperator(op);
@@ -148,6 +197,9 @@ export function handleEqualClick() {
   const B = parseFloat(oprdB === "" ? "0" : oprdB);
 
   if (op === "÷" && B === 0) {
+    setOperandA("0");
+    setOperandB("");
+    setOperator(null);
     updateMainDisplay("0で割ることはできません");
     updateSubDisplay("");
     setPhase(ResultShown);
@@ -176,12 +228,14 @@ export function handleEqualClick() {
       return;
   }
 
+  const dispCalc = isOverMaxNumber(calc) ? calc.toExponential() : calc;
+
   refreshSubDisplay(true);
-  setOperandA(String(calc));
+  setOperandA(String(dispCalc));
   setOperandB("");
   setOperator(null);
   setPhase("ResultShown");
-  updateMainDisplay(calc);
+  updateMainDisplay(dispCalc);
 }
 
 export function handleBackspaceClick() {

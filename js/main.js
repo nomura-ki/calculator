@@ -49,3 +49,25 @@ document
 document
   .getElementById("CALC_BTN_CLR")
   .addEventListener("click", () => handleClearAllClick());
+
+const KeyAction = {};
+
+for (let i = 0; i < 10; i++) {
+  KeyAction[String(i)] = () => handleNumberClick(i);
+}
+
+KeyAction["."] = () => handlePointClick();
+KeyAction["+"] = () => handleOperatorClick("＋");
+KeyAction["-"] = () => handleOperatorClick("ー");
+KeyAction["*"] = () => handleOperatorClick("×");
+KeyAction["/"] = () => handleOperatorClick("÷");
+KeyAction["Enter"] = () => handleEqualClick();
+KeyAction["Backspace"] = () => handleBackspaceClick();
+KeyAction["Delete"] = () => handleClearEntryClick();
+KeyAction["Escape"] = () => handleClearAllClick();
+
+document.addEventListener("keydown", (event) => {
+  if (KeyAction[event.key]) {
+    KeyAction[event.key]();
+  }
+});
