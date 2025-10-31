@@ -48,14 +48,9 @@ export function disabledButton() {
   document.getElementById("CALC_BTN_CLR").disabled = true;
   ClickState.ClickDisabled = true;
 
-  document.getElementById("CALC_BTN_EQ").addEventListener(
-    "click",
-    () => {
-      enableButtons();
-      updateMainDisplay("0");
-    },
-    { once: true }
-  );
+  document
+    .getElementById("CALC_BTN_EQ")
+    .addEventListener("click", () => exitErrorMode(), { once: true });
 }
 
 function enableButtons() {
@@ -71,4 +66,9 @@ function enableButtons() {
   document.getElementById("CALC_BTN_CE").disabled = false;
   document.getElementById("CALC_BTN_CLR").disabled = false;
   ClickState.ClickDisabled = false;
+}
+
+export function exitErrorMode() {
+  enableButtons();
+  updateMainDisplay("0");
 }

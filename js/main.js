@@ -69,13 +69,13 @@ function KeyInput() {
   KeyAction["Escape"] = () => handleClearAllClick();
 
   document.addEventListener("keydown", (event) => {
-    if (ClickState.ClickDisabled) return;
-
     if (event.key === "Enter") {
       event.preventDefault();
       document.getElementById("CALC_BTN_EQ").click();
       return;
     }
+
+    if (ClickState.ClickDisabled) return;
 
     if (KeyAction[event.key]) {
       KeyAction[event.key]();
