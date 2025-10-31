@@ -1,3 +1,5 @@
+import Decimal from "https://unpkg.com/decimal.js@latest/decimal.mjs";
+
 import {
   setPhase,
   getPhase,
@@ -19,8 +21,9 @@ import {
 const MaxNumber = 16;
 
 function isOverMaxNumber(mn) {
-  const Number = String(mn).replace(".", "");
-  return Number.length > MaxNumber;
+  const str = Decimal.isDecimal(mn) ? mn.toString() : String(mn);
+  const digits = str.replace(/\./g, "");
+  return digits.length > MaxNumber;
 }
 
 function activeName() {
@@ -118,10 +121,14 @@ export function handleOperatorClick(op) {
   }
 
   let getOperand = getActive();
+  while (getOperand.endsWith("0") && getOperand.includes(".")) {
+    getOperand = getOperand.slice(0, -1);
+    setActive(getOperand);
+  }
+
   if (getOperand.endsWith(".")) {
     getOperand = getOperand.slice(0, -1);
     setActive(getOperand);
-    updateMainDisplay(getOperand);
   }
 
   if (getPhase() === "ResultShown") {
@@ -142,10 +149,10 @@ export function handleOperatorClick(op) {
     const oprdA = getOperandA() || "0";
     const oprdB = getOperandB() || "0";
 
-    const A = parseFloat(oprdA);
-    const B = parseFloat(oprdB);
+    const A = new Decimal(oprdA);
+    const B = new Decimal(oprdB);
 
-    if (oldOp === "÷" && B === 0) {
+    if (oldOp === "÷" && B.eq(0)) {
       setOperandA("0");
       setOperandB("");
       setOperator(null);
@@ -159,26 +166,28 @@ export function handleOperatorClick(op) {
     let calc = 0;
     switch (oldOp) {
       case "＋":
-        calc = A + B;
+        calc = A.plus(B);
         break;
 
       case "ー":
-        calc = A - B;
+        calc = A.minus(B);
         break;
 
       case "×":
-        calc = A * B;
+        calc = A.times(B);
         break;
 
       case "÷":
-        calc = A / B;
+        calc = A.div(B);
         break;
 
       default:
         return;
     }
 
-    const dispCalc = isOverMaxNumber(calc) ? calc.toExponential() : calc;
+    const dispCalc = isOverMaxNumber(calc)
+      ? calc.toExponential()
+      : calc.toString();
 
     setOperandA(dispCalc);
     setOperandB("");
@@ -198,10 +207,14 @@ export function handleOperatorClick(op) {
 
 export function handleEqualClick() {
   let getOperand = getActive();
+  while (getOperand.endsWith("0") && getOperand.includes(".")) {
+    getOperand = getOperand.slice(0, -1);
+    setActive(getOperand);
+  }
+
   if (getOperand.endsWith(".")) {
     getOperand = getOperand.slice(0, -1);
     setActive(getOperand);
-    updateMainDisplay(getOperand);
   }
 
   const op = getOperator();
@@ -212,10 +225,10 @@ export function handleEqualClick() {
     return;
   }
 
-  const A = parseFloat(oprdA);
-  const B = parseFloat(oprdB === "" ? "0" : oprdB);
+  const A = new Decimal(oprdA);
+  const B = new Decimal(oprdB === "" ? "0" : oprdB);
 
-  if (op === "÷" && B === 0) {
+  if (op === "÷" && B.eq(0)) {
     setOperandA("0");
     setOperandB("");
     setOperator(null);
@@ -229,26 +242,28 @@ export function handleEqualClick() {
   let calc = 0;
   switch (op) {
     case "＋":
-      calc = A + B;
+      calc = A.plus(B);
       break;
 
     case "ー":
-      calc = A - B;
+      calc = A.minus(B);
       break;
 
     case "×":
-      calc = A * B;
+      calc = A.times(B);
       break;
 
     case "÷":
-      calc = A / B;
+      calc = A.div(B);
       break;
 
     default:
       return;
   }
 
-  const dispCalc = isOverMaxNumber(calc) ? calc.toExponential() : calc;
+  const dispCalc = isOverMaxNumber(calc)
+    ? calc.toExponential()
+    : calc.toString();
 
   refreshSubDisplay(true);
   setOperandA(String(dispCalc));
