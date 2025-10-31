@@ -34,18 +34,26 @@ function AdjustFontSize(element, maxPx, minPx) {
   }
 }
 
+const BtnAction = [
+  "CALC_BTN_POINT",
+  "CALC_BTN_OPS_ADD",
+  "CALC_BTN_OPS_SUB",
+  "CALC_BTN_OPS_MUL",
+  "CALC_BTN_OPS_DIV",
+  "CALC_BTN_BKSP",
+  "CALC_BTN_CE",
+  "CALC_BTN_CLR",
+];
+
 export function disabledButton() {
   for (let i = 0; i < 10; i++) {
     document.getElementById(`CALC_BTN_NUM_${i}`).disabled = true;
   }
-  document.getElementById("CALC_BTN_POINT").disabled = true;
-  document.getElementById("CALC_BTN_OPS_ADD").disabled = true;
-  document.getElementById("CALC_BTN_OPS_SUB").disabled = true;
-  document.getElementById("CALC_BTN_OPS_MUL").disabled = true;
-  document.getElementById("CALC_BTN_OPS_DIV").disabled = true;
-  document.getElementById("CALC_BTN_BKSP").disabled = true;
-  document.getElementById("CALC_BTN_CE").disabled = true;
-  document.getElementById("CALC_BTN_CLR").disabled = true;
+
+  for (let i = 0; i < BtnAction.length; i++) {
+    document.getElementById(BtnAction[i]).disabled = true;
+  }
+
   ClickState.ClickDisabled = true;
 
   document
@@ -57,14 +65,11 @@ function enableButtons() {
   for (let i = 0; i < 10; i++) {
     document.getElementById(`CALC_BTN_NUM_${i}`).disabled = false;
   }
-  document.getElementById("CALC_BTN_POINT").disabled = false;
-  document.getElementById("CALC_BTN_OPS_ADD").disabled = false;
-  document.getElementById("CALC_BTN_OPS_SUB").disabled = false;
-  document.getElementById("CALC_BTN_OPS_MUL").disabled = false;
-  document.getElementById("CALC_BTN_OPS_DIV").disabled = false;
-  document.getElementById("CALC_BTN_BKSP").disabled = false;
-  document.getElementById("CALC_BTN_CE").disabled = false;
-  document.getElementById("CALC_BTN_CLR").disabled = false;
+
+  for (let i = 0; i < BtnAction.length; i++) {
+    document.getElementById(BtnAction[i]).disabled = false;
+  }
+
   ClickState.ClickDisabled = false;
 }
 
