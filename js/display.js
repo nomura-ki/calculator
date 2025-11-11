@@ -1,5 +1,16 @@
 import { ClickState } from "./state.js";
 
+const BtnAction = [
+  "CALC_BTN_POINT",
+  "CALC_BTN_OPS_ADD",
+  "CALC_BTN_OPS_SUB",
+  "CALC_BTN_OPS_MUL",
+  "CALC_BTN_OPS_DIV",
+  "CALC_BTN_BKSP",
+  "CALC_BTN_CE",
+  "CALC_BTN_CLR",
+];
+
 export function updateMainDisplay(value) {
   let mainDisVal;
 
@@ -33,17 +44,6 @@ function AdjustFontSize(element, maxPx, minPx) {
     element.style.fontSize = maxPx + "px";
   }
 }
-
-const BtnAction = [
-  "CALC_BTN_POINT",
-  "CALC_BTN_OPS_ADD",
-  "CALC_BTN_OPS_SUB",
-  "CALC_BTN_OPS_MUL",
-  "CALC_BTN_OPS_DIV",
-  "CALC_BTN_BKSP",
-  "CALC_BTN_CE",
-  "CALC_BTN_CLR",
-];
 
 export function disabledButton() {
   for (let i = 0; i < 10; i++) {

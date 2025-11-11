@@ -20,8 +20,10 @@ import {
 //共有ユーティリティ
 const MaxNumber = 16;
 
-function isOverMaxNumber(mn) {
-  const str = Decimal.isDecimal(mn) ? mn.toString() : String(mn);
+function isOverMaxNumber(numberValue) {
+  const str = Decimal.isDecimal()
+    ? numberValue.toString()
+    : String(numberValue);
   const digits = str.replace(/\./g, "");
   return digits.length > MaxNumber;
 }
